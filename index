@@ -20,7 +20,8 @@
         .tema-item { display: flex; align-items: center; background: white; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; cursor: pointer; }
         .tema-item input { margin-right: 10px; transform: scale(1.2); }
         .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 12px; font-size: 18px; font-weight: bold; margin-top: 25px; cursor: pointer; -webkit-appearance: none; }
-        .info-tekst { font-size: 11px; color: #64748b; margin-top: 5px; font-style: italic; }
+        .btn-ingen { border: 2px dashed #94a3b8 !important; color: #64748b !important; margin-top: 10px; width: 100%; }
+        .info-tekst { font-size: 11px; color: #64748b; margin-top: 5px; text-align: center; font-style: italic; }
     </style>
 </head>
 <body>
@@ -82,91 +83,3 @@
     <div id="personInfoSection">
         <label>Kjønn</label>
         <div class="grid grid-3">
-            <button type="button" class="btn k-btn" onclick="velg('k', 'JENTE', this)">JENTE</button>
-            <button type="button" class="btn k-btn" onclick="velg('k', 'GUTT', this)">GUTT</button>
-            <button type="button" class="btn k-btn" onclick="velg('k', 'ANNET', this)">ANNET</button>
-        </div>
-
-        <label>Alder</label>
-        <div class="grid grid-3">
-            <button type="button" class="btn a-btn" onclick="velg('a', 'B-SKOLE', this)">B-SKOLE</button>
-            <button type="button" class="btn a-btn" onclick="velg('a', 'U-SKOLE', this)">U-SKOLE</button>
-            <button type="button" class="btn a-btn" onclick="velg('a', 'VGS', this)">VGS</button>
-        </div>
-        <div class="grid" style="margin-top:8px">
-            <button type="button" class="btn a-btn" onclick="velg('a', '18-25 ÅR', this)">18-25 ÅR</button>
-        </div>
-    </div>
-
-    <label>Antall ungdommer</label>
-    <input type="text" id="antall" placeholder="Eks: 5">
-    <div style="margin-top:10px">
-        <button type="button" class="btn" id="btnIngen" onclick="registrerIngen()" style="width:100%; border-color: #94a3b8;">INGEN OBSERVERT HERS</button>
-        <p class="info-tekst">* Velg dette hvis dere har sjekket området uten å møte noen.</p>
-    </div>
-
-    <button type="button" class="save-btn" id="btnLagre" onclick="lagre()">LAGRE REGISTRERING</button>
-</div>
-
-<script>
-    var valgt = { t: "", k: "", a: "" };
-    var ingenObservert = false;
-
-    function velg(kat, verdi, el) {
-        document.querySelectorAll('.' + kat + '-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        valgt[kat] = verdi;
-        if(kat === 't') document.getElementById('temaSection').style.display = (verdi === 'OMFATTENDE' ? 'block' : 'none');
-        
-        // Hvis man begynner å velge kjønn/alder, deaktiver "Ingen observert"
-        ingenObservert = false;
-        document.getElementById('btnIngen').classList.remove('active');
-        document.getElementById('antall').disabled = false;
-    }
-
-    function registrerIngen() {
-        ingenObservert = true;
-        // Nullstill andre valg
-        document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('btnIngen').classList.add('active');
-        document.getElementById('antall').value = "0";
-        document.getElementById('antall').disabled = true;
-        valgt.k = "INGEN";
-        valgt.a = "INGEN";
-        valgt.t = "ENKEL";
-    }
-
-    function lagre() {
-        if(!ingenObservert && (!valgt.t || !valgt.k || !valgt.a)) return alert("Vennligst velg alle felt!");
-        
-        var btn = document.getElementById('btnLagre');
-        btn.disabled = true;
-        btn.innerHTML = "Sender...";
-
-        var formURL = "https://docs.google.com/forms/d/e/1FAIpQLScEs6BU3u2dsdpIkwnu6SwVhwKWfW-oH97LnYGUvZtHEb4y3Q/formResponse";
-        
-        var params = new URLSearchParams();
-        params.append("entry.842257148", document.getElementById('bydel').value);
-        params.append("entry.214146964", document.getElementById('lokasjon').value);
-        params.append("entry.1473666377", valgt.t);
-        params.append("entry.1346284831", document.getElementById('antall').value);
-        params.append("entry.1163056236", valgt.a);
-        params.append("entry.1511233883", valgt.k);
-
-        fetch(formURL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: params.toString()
-        }).then(() => {
-            alert("Registrert! Bra jobba.");
-            location.reload();
-        }).catch(() => {
-            alert("Feil. Prøv igjen.");
-            btn.disabled = false;
-            btn.innerHTML = "LAGRE REGISTRERING";
-        });
-    }
-</script>
-</body>
-</html>

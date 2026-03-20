@@ -103,7 +103,6 @@
 
     function hurtigLagre() {
         if(confirm("Registrere sjekk av " + document.getElementById('bydel').value + " uten funn?")) {
-            // Sender "OPPSØKENDE UTE" som arena ved hurtiglagring
             sendData("ENKEL", "0", "INGEN", "INGEN", "OPPSØKENDE UTE");
         }
     }

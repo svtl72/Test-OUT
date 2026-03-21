@@ -6,42 +6,32 @@
     <title>OUT Drammen</title>
     <style>
         :root { --primary: #2563eb; --success: #059669; --purple: #8b5cf6; --bg: #f8fafc; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .kort { width: 100%; max-width: 400px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
-        h1 { color: #1e3a8a; font-size: 28px; margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        label { font-weight: 700; display: block; margin: 20px 0 8px; font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
-        select, input[type="text"] { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; background: #fff; box-sizing: border-box; }
-        
-        .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .kort { width: 100%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; box-sizing: border-box; }
+        .header { text-align: center; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+        h1 { color: #1e3a8a; font-size: 24px; margin: 0; }
+        label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 11px; color: #475569; text-transform: uppercase; }
+        select, input[type="text"] { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; background: #fff; box-sizing: border-box; }
+        .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
         .divider:not(:empty)::before { margin-right: .5em; }
         .divider:not(:empty)::after { margin-left: .5em; }
-
-        .btn-quick { background: var(--purple); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 14px; box-shadow: 0 4px 0 #7c3aed; transition: 0.1s; }
-        .btn-quick:active { transform: translateY(2px); box-shadow: 0 2px 0 #7c3aed; }
-
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-quick { background: var(--purple); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 14px; box-shadow: 0 4px 0 #7c3aed; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-        
-        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 14px 5px; border-radius: 12px; font-weight: 700; color: #475569; font-size: 12px; cursor: pointer; -webkit-appearance: none; }
-        .btn.active { background-color: #f1f5f9 !important; border-color: var(--primary) !important; color: var(--primary) !important; box-shadow: inset 0 0 0 1px var(--primary); }
-
-        /* Tema-seksjonen som manglet */
-        #temaSection { display: none; background: #f1f5f9; padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px solid #e2e8f0; }
+        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 12px 5px; border-radius: 10px; font-weight: 700; color: #475569; font-size: 12px; cursor: pointer; -webkit-appearance: none; }
+        .btn.active { background-color: var(--primary) !important; color: white !important; border-color: #1e40af !important; }
+        #temaSection { display: none; background: #f1f5f9; padding: 12px; border-radius: 10px; margin-top: 10px; border: 1px solid #e2e8f0; }
         .tema-valg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .tema-item { display: flex; align-items: center; background: white; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: 600; color: #475569; }
-        .tema-item input { margin-right: 8px; transform: scale(1.1); }
-
-        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 800; margin-top: 30px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        .tema-item { display: flex; align-items: center; background: white; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 11px; cursor: pointer; }
+        .tema-item input { margin-right: 6px; }
+        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 800; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="kort">
-    <div class="header">
-        <h1>OUT Drammen 🚶‍♂️</h1>
-    </div>
+    <div class="header"><h1>OUT Drammen 🚶‍♂️</h1></div>
     
     <label>1. VELG STED</label>
     <select id="bydel">
@@ -57,9 +47,7 @@
         <option value="Åssiden">Åssiden</option>
     </select>
 
-    <div style="margin-top: 15px;">
-        <button type="button" class="btn-quick" onclick="hurtigLagre()">📍 TILSTEDEVÆRELSE I OMRÅDET</button>
-    </div>
+    <button type="button" class="btn-quick" style="margin-top:15px" onclick="hurtigLagre()">📍 TILSTEDEVÆRELSE I OMRÅDET</button>
 
     <div class="divider">ELLER FULL REGISTRERING</div>
 
@@ -82,7 +70,7 @@
     </div>
 
     <div id="temaSection">
-        <label>TEMA FOR SAMTALEN</label>
+        <label>TEMA (Velg flere)</label>
         <div class="tema-valg-grid">
             <label class="tema-item"><input type="checkbox" name="tema" value="Psykisk helse"> Psykisk</label>
             <label class="tema-item"><input type="checkbox" name="tema" value="Rusmidler"> Rus</label>
@@ -106,9 +94,7 @@
         <button type="button" class="btn a-btn" onclick="velg('a', 'U-SKOLE', this)">U-SKOLE</button>
         <button type="button" class="btn a-btn" onclick="velg('a', 'VGS', this)">VGS</button>
     </div>
-    <div style="margin-top:8px">
-        <button type="button" class="btn a-btn" style="width:100%" onclick="velg('a', '20-25 ÅR', this)">20-25 ÅR</button>
-    </div>
+    <button type="button" class="btn a-btn" style="width:100%; margin-top:8px" onclick="velg('a', '20-25 ÅR', this)">20-25 ÅR</button>
 
     <label>ANTALL UNGDOMMER</label>
     <input type="text" id="antall" placeholder="Eks: 1">
@@ -117,53 +103,66 @@
 </div>
 
 <script>
-    var valgt = { t: "", k: "", a: "" };
+    var data = { t: "", k: "", a: "" };
 
     function velg(kat, verdi, el) {
-        document.querySelectorAll('.' + kat + '-btn').forEach(b => b.classList.remove('active'));
+        // Finn alle knapper i samme kategori og fjern aktiv farge
+        var knapper = document.querySelectorAll('.' + kat + '-btn');
+        knapper.forEach(function(b) { b.classList.remove('active'); });
+        
+        // Aktiver knappen som ble trykket
         el.classList.add('active');
-        valgt[kat] = verdi;
+        data[kat] = verdi;
 
-        // Viser/skjuler temaer hvis man velger SAMTALE
-        if(kat === 't') {
+        // Vis tema hvis SAMTALE er valgt
+        if (kat === 't') {
             document.getElementById('temaSection').style.display = (verdi === 'SAMTALE' ? 'block' : 'none');
         }
     }
 
     function hurtigLagre() {
-        if(confirm("Registrere tilstedeværelse i " + document.getElementById('bydel').value + " uten funn?")) {
-            sendData("ENKEL", "0", "INGEN", "INGEN", "OPPSØKENDE UTE");
+        var bydel = document.getElementById('bydel').value;
+        if(confirm("Registrere tilstedeværelse i " + bydel + " uten funn?")) {
+            sendTilGoogle(bydel, "OPPSØKENDE UTE", "ENKEL", "0", "INGEN", "INGEN");
         }
     }
 
     function lagreFull() {
-        if(!valgt.t || !valgt.k || !valgt.a) return alert("Vennligst fyll ut alle felt!");
+        if(!data.t || !data.k || !data.a) {
+            alert("Du må velge Type treff, Kjønn og Alder!");
+            return;
+        }
+        var bydel = document.getElementById('bydel').value;
+        var arena = document.getElementById('lokasjon').value;
         var ant = document.getElementById('antall').value || "1";
-        sendData(valgt.t, ant, valgt.a, valgt.k, document.getElementById('lokasjon').value);
+        
+        sendTilGoogle(bydel, arena, data.t, ant, data.a, data.k);
     }
 
-    function sendData(treff, antall, alder, kjonn, arena) {
+    function sendTilGoogle(bydel, arena, type, antall, alder, kjonn) {
         var btn = document.getElementById('btnLagre');
         btn.disabled = true;
         btn.innerHTML = "SENDER...";
 
         var formURL = "https://docs.google.com/forms/d/e/1FAIpQLScEs6BU3u2dsdpIkwnu6SwVhwKWfW-oH97LnYGUvZtHEb4y3Q/formResponse";
         var params = new URLSearchParams();
-        params.append("entry.842257148", document.getElementById('bydel').value);
+        params.append("entry.842257148", bydel);
         params.append("entry.214146964", arena);
-        params.append("entry.1473666377", treff);
+        params.append("entry.1473666377", type);
         params.append("entry.1346284831", antall);
         params.append("entry.1163056236", alder);
         params.append("entry.1511233883", kjonn);
 
-        // Henter valgte temaer hvis det er en samtale
-        if(treff === "SAMTALE") {
-            var temaer = [];
-            document.querySelectorAll('input[name="tema"]:checked').forEach(cb => temaer.push(cb.value));
-            // Merk: Her må du kanskje legge til entry-ID for tema-feltet i Forms hvis du vil lagre disse spesifikt
-            console.log("Valgte temaer:", temaer.join(", "));
-        }
-
         fetch(formURL, { method: "POST", mode: "no-cors", body: params.toString() })
-        .then(() => {
-            alert("Lagret! Bra jobba
+        .then(function() {
+            alert("Lagret! Bra jobba.");
+            location.reload();
+        }).catch(function() {
+            alert("Noe gikk galt. Sjekk nettet.");
+            btn.disabled = false;
+            btn.innerHTML = "LAGRE FULL REGISTRERING";
+        });
+    }
+</script>
+</body>
+</html>

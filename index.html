@@ -22,10 +22,10 @@
         .btn { background: #fff; border: 2px solid #e2e8f0; padding: 12px 5px; border-radius: 10px; font-weight: 700; color: #475569; font-size: 12px; cursor: pointer; -webkit-appearance: none; }
         .btn.active { background-color: var(--primary) !important; color: white !important; border-color: #1e40af !important; }
         
-        /* Tema-seksjonen som rullgardin */
-        #temaSection { display: none; margin-top: 10px; padding: 10px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
+        /* Tema-boks */
+        #temaSection { display: none; margin-top: 10px; padding: 12px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
 
-        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 800; margin-top: 20px; cursor: pointer; }
+        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 800; margin-top: 20px; cursor: pointer; width: 100%; }
     </style>
 </head>
 <body>
@@ -52,3 +52,116 @@
     <div class="divider">ELLER FULL REGISTRERING</div>
 
     <label>ARENA / UNGDOMSKLUBB</label>
+    <select id="lokasjon">
+        <option value="OPPSØKENDE UTE">OPPSØKENDE UTE</option>
+        <option value="G60">G60</option>
+        <option value="FELLESVERKET">FELLESVERKET</option>
+        <option value="NEON">NEON</option>
+        <option value="DOWN UNDER">DOWN UNDER</option>
+        <option value="UNDERGRUNN">UNDERGRUNN</option>
+        <option value="SKATTEKAMMERET">SKATTEKAMMERET</option>
+        <option value="NØSTEDHALLEN">NØSTEDHALLEN</option>
+    </select>
+
+    <label>TYPE TREFF</label>
+    <div class="grid">
+        <button type="button" class="btn t-btn" onclick="velg('t', 'TREFF', this)">TREFF</button>
+        <button type="button" class="btn t-btn" onclick="velg('t', 'SAMTALE', this)">SAMTALE</button>
+    </div>
+
+    <div id="temaSection">
+        <label>TEMA FOR SAMTALEN</label>
+        <select id="temaValg">
+            <option value="Ingen">-- Velg tema --</option>
+            <option value="Psykisk helse">Psykisk helse</option>
+            <option value="Rusmidler">Rusmidler</option>
+            <option value="Familie">Familie</option>
+            <option value="Kriminalitet">Kriminalitet</option>
+            <option value="Økonomi">Økonomi</option>
+            <option value="Skole/Jobb">Skole/Jobb</option>
+        </select>
+    </div>
+
+    <label>KJØNN</label>
+    <div class="grid grid-3">
+        <button type="button" class="btn k-btn" onclick="velg('k', 'JENTE', this)">JENTE</button>
+        <button type="button" class="btn k-btn" onclick="velg('k', 'GUTT', this)">GUTT</button>
+        <button type="button" class="btn k-btn" onclick="velg('k', 'ANNET', this)">ANNET</button>
+    </div>
+
+    <label>ALDER</label>
+    <div class="grid grid-3">
+        <button type="button" class="btn a-btn" onclick="velg('a', 'B-SKOLE', this)">B-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velg('a', 'U-SKOLE', this)">U-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velg('a', 'VGS', this)">VGS</button>
+    </div>
+    <button type="button" class="btn a-btn" style="width:100%; margin-top:8px" onclick="velg('a', '20-25 ÅR', this)">20-25 ÅR</button>
+
+    <label>ANTALL UNGDOMMER</label>
+    <input type="text" id="antall" placeholder="Eks: 1">
+
+    <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE FULL REGISTRERING</button>
+</div>
+
+<script>
+    var data = { t: "", k: "", a: "" };
+
+    function velg(kat, verdi, el) {
+        // Nullstill knapper i kategorien
+        document.querySelectorAll('.' + kat + '-btn').forEach(b => b.classList.remove('active'));
+        // Aktiver valgt knapp
+        el.classList.add('active');
+        data[kat] = verdi;
+
+        // Vis/skjul tema-rullgardin
+        if (kat === 't') {
+            document.getElementById('temaSection').style.display = (verdi === 'SAMTALE' ? 'block' : 'none');
+        }
+    }
+
+    function hurtigLagre() {
+        var sted = document.getElementById('bydel').value;
+        if(confirm("Registrere tilstedeværelse i " + sted + " uten funn?")) {
+            sendData(sted, "OPPSØKENDE UTE", "ENKEL", "0", "INGEN", "INGEN");
+        }
+    }
+
+    function lagreFull() {
+        if(!data.t || !data.k || !data.a) return alert("Vennligst velg Type treff, Kjønn og Alder!");
+        
+        var sted = document.getElementById('bydel').value;
+        var arena = document.getElementById('lokasjon').value;
+        var ant = document.getElementById('antall').value || "1";
+        
+        // Vi sender typen (TREFF eller SAMTALE) til Forms. 
+        // Hvis det er SAMTALE, kan du manuelt se temaet i appen før du sender.
+        sendData(sted, arena, data.t, ant, data.a, data.k);
+    }
+
+    function sendData(bydel, arena, type, antall, alder, kjonn) {
+        var btn = document.getElementById('btnLagre');
+        btn.disabled = true;
+        btn.innerHTML = "SENDER...";
+
+        var formURL = "https://docs.google.com/forms/d/e/1FAIpQLScEs6BU3u2dsdpIkwnu6SwVhwKWfW-oH97LnYGUvZtHEb4y3Q/formResponse";
+        var params = new URLSearchParams();
+        params.append("entry.842257148", bydel);
+        params.append("entry.214146964", arena);
+        params.append("entry.1473666377", type);
+        params.append("entry.1346284831", antall);
+        params.append("entry.1163056236", alder);
+        params.append("entry.1511233883", kjonn);
+
+        fetch(formURL, { method: "POST", mode: "no-cors", body: params.toString() })
+        .then(() => {
+            alert("Lagret!");
+            location.reload();
+        }).catch(() => {
+            alert("Feil ved lagring.");
+            btn.disabled = false;
+            btn.innerHTML = "LAGRE FULL REGISTRERING";
+        });
+    }
+</script>
+</body>
+</html>

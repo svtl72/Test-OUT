@@ -42,7 +42,6 @@
         <option value="Solbergelva">Solbergelva</option>
         <option value="Strømsø">Strømsø</option>
         <option value="Åskollen">Åskollen</option>
-        <option value="Åssiden">Åssiden</option>
     </select>
 
     <div style="margin-top: 15px;">

@@ -21,6 +21,12 @@
         .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
         .btn { background: #fff; border: 2px solid #e2e8f0; padding: 14px 5px; border-radius: 12px; font-weight: 700; color: #475569; font-size: 12px; cursor: pointer; }
         .btn.active { background-color: #f1f5f9 !important; border-color: var(--primary) !important; color: var(--primary) !important; box-shadow: inset 0 0 0 1px var(--primary); }
+        
+        #temaSection { display: none; background: #f1f5f9; padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px solid #cbd5e1; }
+        .tema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tema-item { display: flex; align-items: center; background: white; padding: 8px; border-radius: 8px; font-size: 12px; border: 1px solid #e2e8f0; cursor: pointer; }
+        .tema-item input { margin-right: 8px; }
+
         .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 800; margin-top: 30px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
@@ -69,74 +75,12 @@
         <button type="button" class="btn t-btn" onclick="velg('t', 'SAMTALE', this)">SAMTALE</button>
     </div>
 
-    <label>KJØNN</label>
-    <div class="grid grid-3">
-        <button type="button" class="btn k-btn" onclick="velg('k', 'JENTE', this)">JENTE</button>
-        <button type="button" class="btn k-btn" onclick="velg('k', 'GUTT', this)">GUTT</button>
-        <button type="button" class="btn k-btn" onclick="velg('k', 'ANNET', this)">ANNET</button>
-    </div>
-
-    <label>ALDER</label>
-    <div class="grid grid-3">
-        <button type="button" class="btn a-btn" onclick="velg('a', 'B-SKOLE', this)">B-SKOLE</button>
-        <button type="button" class="btn a-btn" onclick="velg('a', 'U-SKOLE', this)">U-SKOLE</button>
-        <button type="button" class="btn a-btn" onclick="velg('a', 'VGS', this)">VGS</button>
-    </div>
-    <div style="margin-top:8px">
-        <button type="button" class="btn a-btn" style="width:100%" onclick="velg('a', '20-25 ÅR', this)">20-25 ÅR</button>
-    </div>
-
-    <label>ANTALL UNGDOMMER</label>
-    <input type="text" id="antall" placeholder="Eks: 5">
-
-    <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE FULL REGISTRERING</button>
-</div>
-
-<script>
-    var valgt = { t: "", k: "", a: "" };
-
-    function velg(kat, verdi, el) {
-        document.querySelectorAll('.' + kat + '-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        valgt[kat] = verdi;
-    }
-
-    function hurtigLagre() {
-        if(confirm("Registrere tilstedeværelse i " + document.getElementById('bydel').value + " uten funn?")) {
-            sendData("ENKEL", "0", "INGEN", "INGEN", "OPPSØKENDE UTE");
-        }
-    }
-
-    function lagreFull() {
-        if(!valgt.t || !valgt.k || !valgt.a) return alert("Vennligst fyll ut alle felt!");
-        var ant = document.getElementById('antall').value || "1";
-        sendData(valgt.t, ant, valgt.a, valgt.k, document.getElementById('lokasjon').value);
-    }
-
-    function sendData(treff, antall, alder, kjonn, arena) {
-        var btn = document.getElementById('btnLagre');
-        btn.disabled = true;
-        btn.innerHTML = "SENDER...";
-
-        var formURL = "https://docs.google.com/forms/d/e/1FAIpQLScEs6BU3u2dsdpIkwnu6SwVhwKWfW-oH97LnYGUvZtHEb4y3Q/formResponse";
-        var params = new URLSearchParams();
-        params.append("entry.842257148", document.getElementById('bydel').value);
-        params.append("entry.214146964", arena);
-        params.append("entry.1473666377", treff);
-        params.append("entry.1346284831", antall);
-        params.append("entry.1163056236", alder);
-        params.append("entry.1511233883", kjonn);
-
-        fetch(formURL, { method: "POST", mode: "no-cors", body: params.toString() })
-        .then(() => {
-            alert("Lagret! Bra jobba.");
-            location.reload();
-        }).catch(() => {
-            alert("Noe gikk galt.");
-            btn.disabled = false;
-            btn.innerHTML = "LAGRE FULL REGISTRERING";
-        });
-    }
-</script>
-</body>
-</html>
+    <div id="temaSection">
+        <label>TEMAER FOR SAMTALE</label>
+        <div class="tema-grid">
+            <label class="tema-item"><input type="checkbox" name="tema" value="Alkohol"> Alkohol</label>
+            <label class="tema-item"><input type="checkbox" name="tema" value="Bolig"> Bolig</label>
+            <label class="tema-item"><input type="checkbox" name="tema" value="Cannabis"> Cannabis</label>
+            <label class="tema-item"><input type="checkbox" name="tema" value="Familie"> Familie</label>
+            <label class="tema-item"><input type="checkbox" name="tema" value="Forhold"> Forhold</label>
+            <label class="tema-item"><input type="checkbox" name="tema

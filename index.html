@@ -68,13 +68,13 @@
     </div>
 
     <div id="temaSection">
-        <label>TEMA (Hold inne for å velge flere)</label>
+        <label>TEMA (Hold inne CTRL/CMD for flere)</label>
         <select id="temaValg" multiple>
             <option value="Psykisk helse">Psykisk helse</option>
             <option value="Rusmidler">Rusmidler</option>
             <option value="Alkohol">Alkohol</option>
             <option value="Familie">Familie</option>
-            <option value="Forhold">Forhold/Venner</option>
+            <option value="Forhold">Forhold</option>
             <option value="Kriminalitet">Kriminalitet</option>
             <option value="Økonomi">Økonomi</option>
             <option value="Skole/Jobb">Skole/Jobb</option>
@@ -118,7 +118,7 @@
     function hurtigLagre() {
         var sted = document.getElementById('bydel').value;
         if(confirm("Registrere tilstedeværelse i " + sted + " uten funn?")) {
-            sendData(sted, "OPPSØKENDE UTE", "ENKEL", "0", "INGEN", "INGEN", []);
+            sendData(sted, "OPPSØKENDE UTE", "TREFF", "0", "INGEN", "INGEN", []);
         }
     }
 
@@ -128,7 +128,6 @@
         var arena = document.getElementById('lokasjon').value;
         var ant = document.getElementById('antall').value || "1";
         
-        // Hent valgte temaer hvis det er en samtale
         var temaer = [];
         if(data.t === 'SAMTALE') {
             var select = document.getElementById('temaValg');
@@ -143,7 +142,7 @@
         btn.disabled = true;
         btn.innerHTML = "SENDER...";
         
-        // Din nye Form URL fra den nye kontoen
+        // Din oppdaterte Form URL
         var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeOi1N3cOL5qKiFpv-nczOc7obqEFHFLkQV4FnMOj0wZFk8Jw/formResponse";
         
         var params = new URLSearchParams();
@@ -154,7 +153,7 @@
         params.append("entry.1163056236", alder);
         params.append("entry.1511233883", kjonn);
         
-        // Legg til hvert valgte tema (Google Forms tar imot flere verdier på samme ID for avhuking)
+        // Sender valgte temaer
         if(temaer.length > 0) {
             temaer.forEach(t => {
                 params.append("entry.1946658553", t);
@@ -163,10 +162,10 @@
 
         fetch(formURL, { method: "POST", mode: "no-cors", body: params.toString() })
         .then(() => {
-            alert("Lagret i det nye skjemaet!");
+            alert("Lagret! Godt jobba!");
             location.reload();
         }).catch(() => {
-            alert("Feil ved lagring. Sjekk internettforbindelsen.");
+            alert("Feil ved lagring. Sjekk internett.");
             btn.disabled = false;
             btn.innerHTML = "LAGRE FULL REGISTRERING";
         });

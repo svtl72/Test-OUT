@@ -11,7 +11,7 @@
         .header { text-align: center; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
         h1 { color: #1e3a8a; font-size: 24px; margin: 0; }
         label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 11px; color: #475569; text-transform: uppercase; }
-        select, input[type="text"] { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; background: #fff; box-sizing: border-box; }
+        select, input[type="text"], input[type="number"] { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; background: #fff; box-sizing: border-box; }
         select[multiple] { height: auto; min-height: 120px; padding: 5px; }
         .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
@@ -72,12 +72,13 @@
         <select id="temaValg" multiple>
             <option value="Psykisk helse">Psykisk helse</option>
             <option value="Rusmidler">Rusmidler</option>
+            <option value="Alkohol">Alkohol</option>
             <option value="Familie">Familie</option>
+            <option value="Forhold">Forhold/Venner</option>
             <option value="Kriminalitet">Kriminalitet</option>
             <option value="Økonomi">Økonomi</option>
             <option value="Skole/Jobb">Skole/Jobb</option>
             <option value="Fritid">Fritid</option>
-            <option value="Fysisk helse">Fysisk helse</option>
         </select>
     </div>
 
@@ -97,7 +98,7 @@
     <button type="button" class="btn a-btn" style="width:100%; margin-top:8px" onclick="velg('a', '20-25 ÅR', this)">20-25 ÅR</button>
 
     <label>ANTALL UNGDOMMER</label>
-    <input type="text" id="antall" placeholder="Eks: 1">
+    <input type="number" id="antall" placeholder="Eks: 1" value="1">
 
     <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE FULL REGISTRERING</button>
 </div>
@@ -117,31 +118,32 @@
     function hurtigLagre() {
         var sted = document.getElementById('bydel').value;
         if(confirm("Registrere tilstedeværelse i " + sted + " uten funn?")) {
-            sendData(sted, "OPPSØKENDE UTE", "ENKEL TILSTEDEVÆRELSE", "0", "INGEN", "INGEN", "INGEN");
+            sendData(sted, "OPPSØKENDE UTE", "ENKEL", "0", "INGEN", "INGEN", []);
         }
     }
 
     function lagreFull() {
         if(!data.t || !data.k || !data.a) return alert("Vennligst fyll ut alle felt!");
-        
         var sted = document.getElementById('bydel').value;
         var arena = document.getElementById('lokasjon').value;
         var ant = document.getElementById('antall').value || "1";
         
-        // Henter ut valgte temaer
-        var temaSelect = document.getElementById('temaValg');
-        var valgteTemaer = Array.from(temaSelect.selectedOptions).map(opt => opt.value).join(", ");
-        if (data.t !== 'SAMTALE') valgteTemaer = "INGEN";
-
-        sendData(sted, arena, data.t, ant, data.a, data.k, valgteTemaer);
+        // Hent valgte temaer hvis det er en samtale
+        var temaer = [];
+        if(data.t === 'SAMTALE') {
+            var select = document.getElementById('temaValg');
+            temaer = Array.from(select.selectedOptions).map(opt => opt.value);
+        }
+        
+        sendData(sted, arena, data.t, ant, data.a, data.k, temaer);
     }
 
-    function sendData(bydel, arena, type, antall, alder, kjonn, tema) {
+    function sendData(bydel, arena, type, antall, alder, kjonn, temaer) {
         var btn = document.getElementById('btnLagre');
         btn.disabled = true;
         btn.innerHTML = "SENDER...";
         
-        // Din nye Google Form Response URL
+        // Din nye Form URL fra den nye kontoen
         var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeOi1N3cOL5qKiFpv-nczOc7obqEFHFLkQV4FnMOj0wZFk8Jw/formResponse";
         
         var params = new URLSearchParams();
@@ -151,11 +153,17 @@
         params.append("entry.1346284831", antall);
         params.append("entry.1163056236", alder);
         params.append("entry.1511233883", kjonn);
-        params.append("entry.1946658553", tema); // TEMA-ID-en fra din lenke
+        
+        // Legg til hvert valgte tema (Google Forms tar imot flere verdier på samme ID for avhuking)
+        if(temaer.length > 0) {
+            temaer.forEach(t => {
+                params.append("entry.1946658553", t);
+            });
+        }
 
         fetch(formURL, { method: "POST", mode: "no-cors", body: params.toString() })
         .then(() => {
-            alert("Registrert i loggen!");
+            alert("Lagret i det nye skjemaet!");
             location.reload();
         }).catch(() => {
             alert("Feil ved lagring. Sjekk internettforbindelsen.");

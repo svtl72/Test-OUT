@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OUT Drammen - Endelig Versjon</title>
+    <title>OUT Drammen - Validert Versjon</title>
     <style>
         :root { --primary: #2563eb; --success: #059669; --purple: #8b5cf6; --bg: #f8fafc; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; }
@@ -35,7 +35,7 @@
         <option value="Fjell">Fjell</option>
         <option value="Gulskogen">Gulskogen</option>
         <option value="Konnerud">Konnerud</option>
-        <option value="Krokstadelva">Krokstadelva</option>
+        <option value="Krogstadelva">Krokstadelva</option>
         <option value="Mjøndalen">Mjøndalen</option>
         <option value="Solbergelva">Solbergelva</option>
         <option value="Strømsø">Strømsø</option>
@@ -49,6 +49,7 @@
 
     <label>Arena</label>
     <select id="lokasjon">
+        <option value="">-- Velg Arena --</option>
         <option value="OPPSØKENDE UTE">OPPSØKENDE UTE</option>
         <option value="G60">G60</option>
         <option value="FELLESVERKET">FELLESVERKET</option>
@@ -66,7 +67,7 @@
     </div>
 
     <div id="temaSection">
-        <label>Tema (Velg flere)</label>
+        <label>Tema (Velg minst ett)</label>
         <div class="tema-grid">
             <button type="button" class="btn tema-btn" onclick="toggleTema('Alkohol', this)">Alkohol</button>
             <button type="button" class="btn tema-btn" onclick="toggleTema('Bolig', this)">Bolig</button>
@@ -135,16 +136,33 @@
     function hurtigLagre() {
         var sted = document.getElementById('bydel').value;
         if(confirm("Lagre kun tilstedeværelse i " + sted + "?")) {
-            // Vi sender KUN bydel, resten lar vi være helt tomme
             sendTilGoogle(sted, "", "", "", "", "", []);
         }
     }
 
+    // NY OG STRENGERE VALIDERING
     function lagreFull() {
-        if(!valgtData.t || !valgtData.k || !valgtData.a) return alert("Husk å velge Type, Kjønn og Alder!");
+        var arena = document.getElementById('lokasjon').value;
+        var feilmeldinger = [];
+
+        if (!arena) feilmeldinger.push("- Velg Arena");
+        if (!valgtData.t) feilmeldinger.push("- Velg Type treff");
+        if (!valgtData.k) feilmeldinger.push("- Velg Kjønn");
+        if (!valgtData.a) feilmeldinger.push("- Velg Alder");
+        
+        // Sjekk tema hvis det er samtale
+        if (valgtData.t === 'SAMTALE' && valgteTemaer.length === 0) {
+            feilmeldinger.push("- Velg minst ett Tema for samtale");
+        }
+
+        if (feilmeldinger.length > 0) {
+            alert("Du må fylle ut følgende:\n" + feilmeldinger.join("\n"));
+            return; // Stopper innsendingen
+        }
+
         sendTilGoogle(
             document.getElementById('bydel').value, 
-            document.getElementById('lokasjon').value, 
+            arena, 
             valgtData.t, 
             document.getElementById('antall').value, 
             valgtData.a, 
@@ -172,23 +190,17 @@
             { n: "entry.1511233883", v: kjonn }
         ];
 
-        // VIKTIG: Vi legger kun til inputen hvis verdien IKKE er tom!
         inputs.forEach(function(i) {
             if (i.v !== "") {
                 var inp = document.createElement('input');
-                inp.type = 'hidden'; 
-                inp.name = i.n; 
-                inp.value = i.v;
+                inp.type = 'hidden'; inp.name = i.n; inp.value = i.v;
                 form.appendChild(inp);
             }
         });
 
-        // Legg til TEMAER kun hvis de er valgt
         temaer.forEach(function(t) {
             var inp = document.createElement('input');
-            inp.type = 'hidden'; 
-            inp.name = "entry.1946658553"; 
-            inp.value = t;
+            inp.type = 'hidden'; inp.name = "entry.1946658553"; inp.value = t;
             form.appendChild(inp);
         });
 

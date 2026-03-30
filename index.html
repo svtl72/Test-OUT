@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OUT Drammen - Fullversjon</title>
+    <title>OUT Drammen - Endelig Versjon</title>
     <style>
         :root { --primary: #2563eb; --success: #059669; --purple: #8b5cf6; --bg: #f8fafc; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; }
@@ -12,19 +12,16 @@
         h1 { color: #1e3a8a; margin: 0; font-size: 22px; }
         label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 11px; color: #475569; text-transform: uppercase; }
         select, input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; background: white; box-sizing: border-box; }
-        .btn-quick { background: var(--purple); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; }
-        .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        .btn-quick { background: var(--purple); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 0 #7c3aed; }
+        .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
         .btn { background: #fff; border: 2px solid #e2e8f0; padding: 10px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; font-size: 12px; transition: 0.2s; }
         .btn.active { background: var(--primary) !important; color: white !important; border-color: #1e40af !important; }
-        
-        /* Tema-grid med 2 kolonner for bedre plass på mobil/PC */
         .tema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         #temaSection { display: none; margin-top: 10px; padding: 15px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
-        
-        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; margin-top: 25px; cursor: pointer; }
+        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; margin-top: 25px; cursor: pointer; width: 100%; }
     </style>
 </head>
 <body>
@@ -46,7 +43,7 @@
         <option value="Åssiden">Åssiden</option>
     </select>
 
-    <button type="button" class="btn-quick" onclick="hurtigLagre()">📍 HURTIG-REG (Kun tilstede)</button>
+    <button type="button" class="btn-quick" onclick="hurtigLagre()">📍 HURTIG-REG (Kun Sted)</button>
 
     <div class="divider">Full registrering</div>
 
@@ -109,7 +106,7 @@
     <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE REGISTRERING</button>
 </div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Alt lagret!'); location.reload();}"></iframe>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Data er registrert i Google!'); location.reload();}"></iframe>
 
 <script>
     var valgtData = { t: "", k: "", a: "" };
@@ -136,8 +133,10 @@
     }
 
     function hurtigLagre() {
-        if(confirm("Lagre rask tilstedeværelse?")) {
-            sendTilGoogle(document.getElementById('bydel').value, "OPPSØKENDE UTE", "TREFF", "0", "ANNET", "ANNET", []);
+        var sted = document.getElementById('bydel').value;
+        if(confirm("Lagre kun tilstedeværelse i " + sted + "?")) {
+            // Vi sender KUN bydel, resten lar vi være helt tomme
+            sendTilGoogle(sted, "", "", "", "", "", []);
         }
     }
 
@@ -173,15 +172,23 @@
             { n: "entry.1511233883", v: kjonn }
         ];
 
+        // VIKTIG: Vi legger kun til inputen hvis verdien IKKE er tom!
         inputs.forEach(function(i) {
-            var inp = document.createElement('input');
-            inp.type = 'hidden'; inp.name = i.n; inp.value = i.v;
-            form.appendChild(inp);
+            if (i.v !== "") {
+                var inp = document.createElement('input');
+                inp.type = 'hidden'; 
+                inp.name = i.n; 
+                inp.value = i.v;
+                form.appendChild(inp);
+            }
         });
 
+        // Legg til TEMAER kun hvis de er valgt
         temaer.forEach(function(t) {
             var inp = document.createElement('input');
-            inp.type = 'hidden'; inp.name = "entry.1946658553"; inp.value = t;
+            inp.type = 'hidden'; 
+            inp.name = "entry.1946658553"; 
+            inp.value = t;
             form.appendChild(inp);
         });
 

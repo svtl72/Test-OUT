@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OUT Drammen - Master</title>
+    <title>OUT Drammen - Driftsklar</title>
     <style>
         :root { --primary: #2563eb; --success: #059669; --purple: #8b5cf6; --bg: #f8fafc; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; }
@@ -17,11 +17,14 @@
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 10px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; font-size: 12px; transition: 0.2s; }
-        .btn.active { background: var(--primary) !important; color: white !important; border-color: #1e40af !important; }
+        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; font-size: 13px; }
+        
+        /* Fargen som viser hva som er valgt */
+        .btn.active { background-color: #2563eb !important; color: white !important; border-color: #1e40af !important; }
+        
         .tema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         #temaSection { display: none; margin-top: 10px; padding: 15px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; margin-top: 25px; cursor: pointer; width: 100%; }
+        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 20px; border-radius: 14px; font-size: 18px; font-weight: 800; margin-top: 25px; cursor: pointer; width: 100%; }
     </style>
 </head>
 <body>
@@ -29,7 +32,7 @@
 <div class="kort">
     <div class="header"><h1>OUT Drammen 🚶‍♂️</h1></div>
     
-    <label>Sted</label>
+    <label>1. Velg Sted</label>
     <select id="bydel">
         <option value="Bragernes">Bragernes</option>
         <option value="Fjell">Fjell</option>
@@ -61,44 +64,44 @@
 
     <label>Type treff</label>
     <div class="grid">
-        <button type="button" class="btn t-btn" onclick="velgEnkel('t', 'TREFF', this)">TREFF</button>
-        <button type="button" class="btn t-btn" onclick="velgEnkel('t', 'SAMTALE', this)">SAMTALE</button>
+        <button type="button" class="btn t-btn" onclick="velgType('TREFF', this)">TREFF</button>
+        <button type="button" class="btn t-btn" onclick="velgType('SAMTALE', this)">SAMTALE</button>
     </div>
 
     <div id="temaSection">
-        <label>Tema (Velg minst ett)</label>
+        <label>Tema (Velg flere)</label>
         <div class="tema-grid">
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Alkohol', this)">Alkohol</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Bolig', this)">Bolig</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Cannabis', this)">Cannabis</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Familie', this)">Familie</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Forhold', this)">Forhold</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Fremtid', this)">Fremtid</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Fysisk helse', this)">Fysisk helse</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Psykisk helse', this)">Psykisk helse</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Kriminalitet', this)">Kriminalitet</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Rusmidler', this)">Rusmidler</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Økonomi', this)">Økonomi</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Vold', this)">Vold</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Skole', this)">Skole</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Informasjonsarbeid', this)">Informasjonsarbeid</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Fritid', this)">Fritid</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Alkohol', this)">Alkohol</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Bolig', this)">Bolig</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Cannabis', this)">Cannabis</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Familie', this)">Familie</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Forhold', this)">Forhold</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Fremtid', this)">Fremtid</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Fysisk helse', this)">Fysisk helse</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Psykisk helse', this)">Psykisk helse</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Kriminalitet', this)">Kriminalitet</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Rusmidler', this)">Rusmidler</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Økonomi', this)">Økonomi</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Vold', this)">Vold</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Skole', this)">Skole</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Informasjonsarbeid', this)">Informasjonsarbeid</button>
+            <button type="button" class="btn tema-btn" onclick="velgTema('Fritid', this)">Fritid</button>
         </div>
     </div>
 
     <label>Kjønn</label>
     <div class="grid-3">
-        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'GUTT', this)">GUTT</button>
-        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'JENTE', this)">JENTE</button>
-        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'ANNET', this)">ANNET</button>
+        <button type="button" class="btn k-btn" onclick="velgKjonn('GUTT', this)">GUTT</button>
+        <button type="button" class="btn k-btn" onclick="velgKjonn('JENTE', this)">JENTE</button>
+        <button type="button" class="btn k-btn" onclick="velgKjonn('ANNET', this)">ANNET</button>
     </div>
 
     <label>Alder</label>
     <div class="grid">
-        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'B-SKOLE', this)">B-SKOLE</button>
-        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'U-SKOLE', this)">U-SKOLE</button>
-        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'VGS', this)">VGS</button>
-        <button type="button" class="btn a-btn" onclick="velgEnkel('a', '20-25 ÅR', this)">20-25 ÅR</button>
+        <button type="button" class="btn a-btn" onclick="velgAlder('B-SKOLE', this)">B-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velgAlder('U-SKOLE', this)">U-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velgAlder('VGS', this)">VGS</button>
+        <button type="button" class="btn a-btn" onclick="velgAlder('20-25 ÅR', this)">20-25 ÅR</button>
     </div>
 
     <label>Antall ungdommer</label>
@@ -107,72 +110,110 @@
     <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE REGISTRERING</button>
 </div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Data er registrert i Google!'); location.reload();}"></iframe>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Innsending vellykket!'); location.reload();}"></iframe>
 
 <script>
-    var valgtData = { t: "", k: "", a: "" };
+    var valgtType = "";
+    var valgtKjonn = "";
+    var valgtAlder = "";
     var valgteTemaer = [];
     var sent = false;
 
-    function velgEnkel(kat, verdi, el) {
-        document.querySelectorAll('.' + kat + '-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        valgtData[kat] = verdi;
-        if (kat === 't') {
-            document.getElementById('temaSection').style.display = (verdi === 'SAMTALE' ? 'block' : 'none');
-        }
+    function velgType(v, el) {
+        var btns = document.getElementsByClassName('t-btn');
+        for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+        el.classList.add('active'); valgtType = v;
+        document.getElementById('temaSection').style.display = (v === 'SAMTALE' ? 'block' : 'none');
     }
 
-    function toggleTema(verdi, el) {
-        if (valgteTemaer.includes(verdi)) {
-            valgteTemaer = valgteTemaer.filter(t => t !== verdi);
+    function velgKjonn(v, el) {
+        var btns = document.getElementsByClassName('k-btn');
+        for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+        el.classList.add('active'); valgtKjonn = v;
+    }
+
+    function velgAlder(v, el) {
+        var btns = document.getElementsByClassName('a-btn');
+        for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+        el.classList.add('active'); valgtAlder = v;
+    }
+
+    function velgTema(v, el) {
+        if (el.classList.contains('active')) {
             el.classList.remove('active');
+            valgteTemaer = valgteTemaer.filter(function(t) { return t !== v; });
         } else {
-            valgteTemaer.push(verdi);
             el.classList.add('active');
+            valgteTemaer.push(v);
         }
     }
 
     function hurtigLagre() {
         var sted = document.getElementById('bydel').value;
-        if(confirm("Lagre kun tilstedeværelse i " + sted + "?")) {
+        if(confirm("Hurtig-lagre kun tilstedeværelse i " + sted + "?")) {
             sendTilGoogle(sted, "", "", "", "", "", []);
         }
     }
 
     function lagreFull() {
-        var arena = document.getElementById('lokasjon').value;
-        var feilmeldinger = [];
+        var feil = [];
+        if (!valgtType) feil.push("- Type treff");
+        if (!valgtKjonn) feil.push("- Kjønn");
+        if (!valgtAlder) feil.push("- Alder");
+        if (valgtType === 'SAMTALE' && valgteTemaer.length === 0) feil.push("- Minst ett tema");
 
-        if (!valgtData.t) feilmeldinger.push("- Velg Type treff");
-        if (!valgtData.k) feilmeldinger.push("- Velg Kjønn");
-        if (!valgtData.a) feilmeldinger.push("- Velg Alder");
-        
-        if (valgtData.t === 'SAMTALE' && valgteTemaer.length === 0) {
-            feilmeldinger.push("- Velg minst ett Tema for samtale");
-        }
-
-        if (feilmeldinger.length > 0) {
-            alert("Vennligst fyll ut følgende før lagring:\n" + feilmeldinger.join("\n"));
+        if (feil.length > 0) {
+            alert("Vennligst velg:\n" + feil.join("\n"));
             return;
         }
 
         sendTilGoogle(
-            document.getElementById('bydel').value, 
-            arena, 
-            valgtData.t, 
-            document.getElementById('antall').value, 
-            valgtData.a, 
-            valgtData.k, 
+            document.getElementById('bydel').value,
+            document.getElementById('lokasjon').value,
+            valgtType,
+            document.getElementById('antall').value,
+            valgtAlder,
+            valgtKjonn,
             valgteTemaer
         );
     }
 
-    function sendTilGoogle(bydel, arena, type, antall, alder, kjonn, temaer) {
+    function sendTilGoogle(bydel, arena, type, ant, alder, kjonn, temaer) {
         sent = true;
-        document.getElementById('btnLagre').disabled = true;
-        document.getElementById('btnLagre').innerHTML = "SENDER...";
+        var btn = document.getElementById('btnLagre');
+        btn.disabled = true; btn.innerHTML = "SENDER...";
 
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = '
+        form.action = 'https://docs.google.com/forms/d/e/1FAIpQLSeOi1N3cOL5qKiFpv-nczOc7obqEFHFLkQV4FnMOj0wZFk8Jw/formResponse';
+        form.target = 'hidden_iframe';
+
+        var data = [
+            {n: "entry.842257148", v: bydel},
+            {n: "entry.214146964", v: arena},
+            {n: "entry.1473666377", v: type},
+            {n: "entry.1346284831", v: ant},
+            {n: "entry.1163056236", v: alder},
+            {n: "entry.1511233883", v: kjonn}
+        ];
+
+        data.forEach(function(item) {
+            if(item.v !== "") {
+                var inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = item.n; inp.value = item.v;
+                form.appendChild(inp);
+            }
+        });
+
+        temaer.forEach(function(t) {
+            var inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = "entry.1946658553"; inp.value = t;
+            form.appendChild(inp);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</body>
+</html>

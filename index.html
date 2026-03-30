@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OUT Drammen - Fullversjon</title>
+    <title>OUT Drammen - Driftsversjon</title>
     <style>
         :root { --primary: #2563eb; --success: #059669; --purple: #8b5cf6; --bg: #f8fafc; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
-        .kort { width: 100%; max-width: 450px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-        h1 { color: #1e3a8a; margin: 0; font-size: 24px; }
-        label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 12px; color: #475569; text-transform: uppercase; }
-        select, input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        /* Gjør det lettere å velge flere temaer på PC */
-        select[multiple] { height: 180px; cursor: pointer; }
-        .hint { font-size: 11px; color: #64748b; margin-top: 4px; font-style: italic; }
-        .btn-quick { background: var(--purple); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 0 #7c3aed; }
-        .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: #94a3b8; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; }
+        .kort { width: 100%; max-width: 450px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; box-sizing: border-box; }
+        .header { text-align: center; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        h1 { color: #1e3a8a; margin: 0; font-size: 22px; }
+        label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 11px; color: #475569; text-transform: uppercase; }
+        select, input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; background: white; box-sizing: border-box; }
+        .btn-quick { background: var(--purple); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; }
-        .btn.active { background: var(--primary); color: white; border-color: #1e40af; }
-        #temaSection { display: none; margin-top: 15px; padding: 15px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 20px; border-radius: 14px; font-size: 18px; font-weight: 800; margin-top: 25px; cursor: pointer; }
-        .save-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; font-size: 13px; transition: 0.2s; }
+        .btn.active { background: var(--primary) !important; color: white !important; border-color: #1e40af !important; }
+        .tema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        #temaSection { display: none; margin-top: 10px; padding: 15px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 800; margin-top: 20px; cursor: pointer; width: 100%; }
     </style>
 </head>
 <body>
@@ -31,13 +29,13 @@
 <div class="kort">
     <div class="header"><h1>OUT Drammen 🚶‍♂️</h1></div>
     
-    <label>1. Sted</label>
+    <label>Sted</label>
     <select id="bydel">
         <option value="Bragernes">Bragernes</option>
         <option value="Fjell">Fjell</option>
         <option value="Gulskogen">Gulskogen</option>
         <option value="Konnerud">Konnerud</option>
-        <option value="Krogstadelva">Krogstadelva</option>
+        <option value="Krokstadelva">Krokstadelva</option>
         <option value="Mjøndalen">Mjøndalen</option>
         <option value="Solbergelva">Solbergelva</option>
         <option value="Strømsø">Strømsø</option>
@@ -45,9 +43,9 @@
         <option value="Åssiden">Åssiden</option>
     </select>
 
-    <button type="button" class="btn-quick" onclick="hurtigLagre()">📍 HURTIGREGISTRERING (Kun tilstedeværelse)</button>
+    <button type="button" class="btn-quick" onclick="hurtigLagre()">📍 HURTIG-REG (Kun tilstede)</button>
 
-    <div class="divider">ELLER FULL REGISTRERING</div>
+    <div class="divider">Full registrering</div>
 
     <label>Arena</label>
     <select id="lokasjon">
@@ -63,86 +61,88 @@
 
     <label>Type treff</label>
     <div class="grid">
-        <button type="button" class="btn t-btn" onclick="velg('t', 'TREFF', this)">TREFF</button>
-        <button type="button" class="btn t-btn" onclick="velg('t', 'SAMTALE', this)">SAMTALE</button>
+        <button type="button" class="btn t-btn" onclick="velgEnkel('t', 'TREFF', this)">TREFF</button>
+        <button type="button" class="btn t-btn" onclick="velgEnkel('t', 'SAMTALE', this)">SAMTALE</button>
     </div>
 
     <div id="temaSection">
-        <label>Tema</label>
-        <div class="hint">Hold inne CTRL-tasten for å velge flere temaer</div>
-        <select id="temaValg" multiple>
-            <option value="Alkohol">Alkohol</option>
-            <option value="Familie">Familie</option>
-            <option value="Kriminalitet">Kriminalitet</option>
-            <option value="Psykisk helse">Psykisk helse</option>
-            <option value="Rusmidler">Rusmidler</option>
-            <option value="Forhold">Forhold</option>
-            <option value="Økonomi">Økonomi</option>
-            <option value="Skole/Jobb">Skole/Jobb</option>
-            <option value="Fritid">Fritid</option>
-        </select>
+        <label>Tema (Velg flere)</label>
+        <div class="tema-grid">
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Alkohol', this)">Alkohol</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Familie', this)">Familie</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Psykisk helse', this)">Psykisk helse</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Vold', this)">Vold</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Rusmidler', this)">Rusmidler</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Forhold', this)">Forhold</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Økonomi', this)">Økonomi</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Skole/Jobb', this)">Skole/Jobb</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Fritid', this)">Fritid</button>
+        </div>
     </div>
 
     <label>Kjønn</label>
-    <div class="grid">
-        <button type="button" class="btn k-btn" onclick="velg('k', 'GUTT', this)">GUTT</button>
-        <button type="button" class="btn k-btn" onclick="velg('k', 'JENTE', this)">JENTE</button>
-        <button type="button" class="btn k-btn" onclick="velg('k', 'ANNET', this)">ANNET</button>
+    <div class="grid-3">
+        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'GUTT', this)">GUTT</button>
+        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'JENTE', this)">JENTE</button>
+        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'ANNET', this)">ANNET</button>
     </div>
 
     <label>Alder</label>
     <div class="grid">
-        <button type="button" class="btn a-btn" onclick="velg('a', 'B-SKOLE', this)">B-SKOLE</button>
-        <button type="button" class="btn a-btn" onclick="velg('a', 'U-SKOLE', this)">U-SKOLE</button>
-        <button type="button" class="btn a-btn" onclick="velg('a', 'VGS', this)">VGS</button>
-        <button type="button" class="btn a-btn" onclick="velg('a', '20-25 ÅR', this)">20-25 ÅR</button>
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'B-SKOLE', this)">B-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'U-SKOLE', this)">U-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'VGS', this)">VGS</button>
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', '20-25 ÅR', this)">20-25 ÅR</button>
     </div>
 
     <label>Antall ungdommer</label>
-    <input type="number" id="antall" value="1" min="0">
+    <input type="number" id="antall" value="1">
 
     <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE REGISTRERING</button>
 </div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Data er registrert i Google!'); location.reload();}"></iframe>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Data er registrert!'); location.reload();}"></iframe>
 
 <script>
-    var data = { t: "", k: "", a: "" };
+    var valgtData = { t: "", k: "", a: "" };
+    var valgteTemaer = [];
     var sent = false;
 
-    function velg(kat, verdi, el) {
+    function velgEnkel(kat, verdi, el) {
         document.querySelectorAll('.' + kat + '-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        data[kat] = verdi;
+        valgtData[kat] = verdi;
         if (kat === 't') {
             document.getElementById('temaSection').style.display = (verdi === 'SAMTALE' ? 'block' : 'none');
         }
     }
 
+    function toggleTema(verdi, el) {
+        if (valgteTemaer.includes(verdi)) {
+            valgteTemaer = valgteTemaer.filter(t => t !== verdi);
+            el.classList.remove('active');
+        } else {
+            valgteTemaer.push(verdi);
+            el.classList.add('active');
+        }
+    }
+
     function hurtigLagre() {
-        if(confirm("Registrere tilstedeværelse uten funn?")) {
-            sendTilGoogle(document.getElementById('bydel').value, "OPPSØKENDE UTE", "TREFF", "0", "INGEN", "INGEN", []);
+        if(confirm("Lagre tilstedeværelse i " + document.getElementById('bydel').value + "?")) {
+            sendTilGoogle(document.getElementById('bydel').value, "OPPSØKENDE UTE", "TREFF", "0", "ANNET", "ANNET", []);
         }
     }
 
     function lagreFull() {
-        if(!data.t || !data.k || !data.a) return alert("Vennligst velg både Type, Kjønn og Alder!");
-        
-        var temaer = [];
-        if(data.t === 'SAMTALE') {
-            var select = document.getElementById('temaValg');
-            temaer = Array.from(select.selectedOptions).map(opt => opt.value);
-            if(temaer.length === 0) return alert("Vennligst velg minst ett tema for samtale!");
-        }
-
+        if(!valgtData.t || !valgtData.k || !valgtData.a) return alert("Fyll ut Type, Kjønn og Alder!");
         sendTilGoogle(
-            document.getElementById('bydel').value,
-            document.getElementById('lokasjon').value,
-            data.t,
-            document.getElementById('antall').value,
-            data.a,
-            data.k,
-            temaer
+            document.getElementById('bydel').value, 
+            document.getElementById('lokasjon').value, 
+            valgtData.t, 
+            document.getElementById('antall').value, 
+            valgtData.a, 
+            valgtData.k, 
+            valgteTemaer
         );
     }
 
@@ -156,38 +156,30 @@
         form.action = 'https://docs.google.com/forms/d/e/1FAIpQLSeOi1N3cOL5qKiFpv-nczOc7obqEFHFLkQV4FnMOj0wZFk8Jw/formResponse';
         form.target = 'hidden_iframe';
 
-        // Definer alle feltene basert på de NYE ID-ene fra lenken din
-        var fields = {
-            "entry.842257148": bydel,
-            "entry.214146964": arena,
-            "entry.1473666377": type,
-            "entry.1346284831": antall,
-            "entry.1163056236": alder,
-            "entry.1511233883": kjonn
-        };
+        var inputs = [
+            { n: "entry.842257148", v: bydel },
+            { n: "entry.214146964", v: arena },
+            { n: "entry.1473666377", v: type },
+            { n: "entry.1346284831", v: antall },
+            { n: "entry.1163056236", v: alder },
+            { n: "entry.1511233883", v: kjonn }
+        ];
 
-        // Legg til standardfeltene
-        for (var key in fields) {
-            var input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = fields[key];
-            form.appendChild(input);
-        }
+        inputs.forEach(function(i) {
+            var inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = i.n; inp.value = i.v;
+            form.appendChild(inp);
+        });
 
-        // Legg til TEMA (viktig: samme ID brukes flere ganger for avhukingsbokser)
         temaer.forEach(function(t) {
-            var input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = "entry.1946658553";
-            input.value = t;
-            form.appendChild(input);
+            var inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = "entry.1946658553"; inp.value = t;
+            form.appendChild(inp);
         });
 
         document.body.appendChild(form);
         form.submit();
     }
 </script>
-
 </body>
 </html>

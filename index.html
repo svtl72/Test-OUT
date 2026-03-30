@@ -12,8 +12,7 @@
         h1 { color: #1e3a8a; font-size: 24px; margin: 0; }
         label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 11px; color: #475569; text-transform: uppercase; }
         select, input[type="text"] { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; background: #fff; box-sizing: border-box; }
-        /* Gjør multiselect litt høyere så man ser at det er flere valg */
-        select[multiple] { height: auto; min-height: 100px; padding: 5px; }
+        select[multiple] { height: auto; min-height: 120px; padding: 5px; }
         .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
         .divider:not(:empty)::before { margin-right: .5em; }
@@ -78,6 +77,7 @@
             <option value="Økonomi">Økonomi</option>
             <option value="Skole/Jobb">Skole/Jobb</option>
             <option value="Fritid">Fritid</option>
+            <option value="Fysisk helse">Fysisk helse</option>
         </select>
     </div>
 
@@ -117,23 +117,33 @@
     function hurtigLagre() {
         var sted = document.getElementById('bydel').value;
         if(confirm("Registrere tilstedeværelse i " + sted + " uten funn?")) {
-            sendData(sted, "OPPSØKENDE UTE", "ENKEL", "0", "INGEN", "INGEN");
+            sendData(sted, "OPPSØKENDE UTE", "ENKEL TILSTEDEVÆRELSE", "0", "INGEN", "INGEN", "INGEN");
         }
     }
 
     function lagreFull() {
         if(!data.t || !data.k || !data.a) return alert("Vennligst fyll ut alle felt!");
+        
         var sted = document.getElementById('bydel').value;
         var arena = document.getElementById('lokasjon').value;
         var ant = document.getElementById('antall').value || "1";
-        sendData(sted, arena, data.t, ant, data.a, data.k);
+        
+        // Henter ut valgte temaer
+        var temaSelect = document.getElementById('temaValg');
+        var valgteTemaer = Array.from(temaSelect.selectedOptions).map(opt => opt.value).join(", ");
+        if (data.t !== 'SAMTALE') valgteTemaer = "INGEN";
+
+        sendData(sted, arena, data.t, ant, data.a, data.k, valgteTemaer);
     }
 
-    function sendData(bydel, arena, type, antall, alder, kjonn) {
+    function sendData(bydel, arena, type, antall, alder, kjonn, tema) {
         var btn = document.getElementById('btnLagre');
         btn.disabled = true;
         btn.innerHTML = "SENDER...";
-        var formURL = "https://docs.google.com/forms/d/e/1FAIpQLScEs6BU3u2dsdpIkwnu6SwVhwKWfW-oH97LnYGUvZtHEb4y3Q/formResponse";
+        
+        // Din nye Google Form Response URL
+        var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeOi1N3cOL5qKiFpv-nczOc7obqEFHFLkQV4FnMOj0wZFk8Jw/formResponse";
+        
         var params = new URLSearchParams();
         params.append("entry.842257148", bydel);
         params.append("entry.214146964", arena);
@@ -141,13 +151,14 @@
         params.append("entry.1346284831", antall);
         params.append("entry.1163056236", alder);
         params.append("entry.1511233883", kjonn);
+        params.append("entry.1946658553", tema); // TEMA-ID-en fra din lenke
 
         fetch(formURL, { method: "POST", mode: "no-cors", body: params.toString() })
         .then(() => {
-            alert("Lagret!");
+            alert("Registrert i loggen!");
             location.reload();
         }).catch(() => {
-            alert("Feil ved lagring.");
+            alert("Feil ved lagring. Sjekk internettforbindelsen.");
             btn.disabled = false;
             btn.innerHTML = "LAGRE FULL REGISTRERING";
         });

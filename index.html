@@ -12,17 +12,19 @@
         h1 { color: #1e3a8a; margin: 0; font-size: 22px; }
         label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 11px; color: #475569; text-transform: uppercase; }
         select, input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; background: white; box-sizing: border-box; }
+        
+        /* Rullemeny for tema */
+        select[multiple] { height: 120px; border: 2px solid var(--primary); }
+        .hint { font-size: 10px; color: #64748b; margin-bottom: 5px; font-style: italic; }
+
         .btn-quick { background: var(--purple); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 0 #7c3aed; }
         .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: #94a3b8; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
         .btn { background: #fff; border: 2px solid #e2e8f0; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; font-size: 13px; }
+        .btn.active { background-color: var(--primary) !important; color: white !important; border-color: #1e40af !important; }
         
-        /* Fargen som viser hva som er valgt */
-        .btn.active { background-color: #2563eb !important; color: white !important; border-color: #1e40af !important; }
-        
-        .tema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         #temaSection { display: none; margin-top: 10px; padding: 15px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
         .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 20px; border-radius: 14px; font-size: 18px; font-weight: 800; margin-top: 25px; cursor: pointer; width: 100%; }
     </style>
@@ -69,24 +71,25 @@
     </div>
 
     <div id="temaSection">
-        <label>Tema (Velg flere)</label>
-        <div class="tema-grid">
-            <button type="button" class="btn tema-btn" onclick="velgTema('Alkohol', this)">Alkohol</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Bolig', this)">Bolig</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Cannabis', this)">Cannabis</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Familie', this)">Familie</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Forhold', this)">Forhold</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Fremtid', this)">Fremtid</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Fysisk helse', this)">Fysisk helse</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Psykisk helse', this)">Psykisk helse</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Kriminalitet', this)">Kriminalitet</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Rusmidler', this)">Rusmidler</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Økonomi', this)">Økonomi</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Vold', this)">Vold</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Skole', this)">Skole</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Informasjonsarbeid', this)">Informasjonsarbeid</button>
-            <button type="button" class="btn tema-btn" onclick="velgTema('Fritid', this)">Fritid</button>
-        </div>
+        <label>Tema</label>
+        <div class="hint">Huk av de temaene det gjelder</div>
+        <select id="temaValg" multiple>
+            <option value="Alkohol">Alkohol</option>
+            <option value="Bolig">Bolig</option>
+            <option value="Cannabis">Cannabis</option>
+            <option value="Familie">Familie</option>
+            <option value="Forhold">Forhold</option>
+            <option value="Fremtid">Fremtid</option>
+            <option value="Fysisk helse">Fysisk helse</option>
+            <option value="Psykisk helse">Psykisk helse</option>
+            <option value="Kriminalitet">Kriminalitet</option>
+            <option value="Rusmidler">Rusmidler</option>
+            <option value="Økonomi">Økonomi</option>
+            <option value="Vold">Vold</option>
+            <option value="Skole">Skole</option>
+            <option value="Informasjonsarbeid">Informasjonsarbeid</option>
+            <option value="Fritid">Fritid</option>
+        </select>
     </div>
 
     <label>Kjønn</label>
@@ -116,7 +119,6 @@
     var valgtType = "";
     var valgtKjonn = "";
     var valgtAlder = "";
-    var valgteTemaer = [];
     var sent = false;
 
     function velgType(v, el) {
@@ -138,16 +140,6 @@
         el.classList.add('active'); valgtAlder = v;
     }
 
-    function velgTema(v, el) {
-        if (el.classList.contains('active')) {
-            el.classList.remove('active');
-            valgteTemaer = valgteTemaer.filter(function(t) { return t !== v; });
-        } else {
-            el.classList.add('active');
-            valgteTemaer.push(v);
-        }
-    }
-
     function hurtigLagre() {
         var sted = document.getElementById('bydel').value;
         if(confirm("Hurtig-lagre kun tilstedeværelse i " + sted + "?")) {
@@ -156,6 +148,9 @@
     }
 
     function lagreFull() {
+        var select = document.getElementById('temaValg');
+        var valgteTemaer = Array.from(select.selectedOptions).map(opt => opt.value);
+
         var feil = [];
         if (!valgtType) feil.push("- Type treff");
         if (!valgtKjonn) feil.push("- Kjønn");

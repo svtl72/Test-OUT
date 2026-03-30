@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OUT Drammen - Effektiv Versjon</title>
+    <title>OUT Drammen - Master</title>
     <style>
         :root { --primary: #2563eb; --success: #059669; --purple: #8b5cf6; --bg: #f8fafc; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; }
@@ -75,4 +75,104 @@
             <button type="button" class="btn tema-btn" onclick="toggleTema('Forhold', this)">Forhold</button>
             <button type="button" class="btn tema-btn" onclick="toggleTema('Fremtid', this)">Fremtid</button>
             <button type="button" class="btn tema-btn" onclick="toggleTema('Fysisk helse', this)">Fysisk helse</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Psykisk helse', this)">
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Psykisk helse', this)">Psykisk helse</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Kriminalitet', this)">Kriminalitet</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Rusmidler', this)">Rusmidler</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Økonomi', this)">Økonomi</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Vold', this)">Vold</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Skole', this)">Skole</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Informasjonsarbeid', this)">Informasjonsarbeid</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Fritid', this)">Fritid</button>
+        </div>
+    </div>
+
+    <label>Kjønn</label>
+    <div class="grid-3">
+        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'GUTT', this)">GUTT</button>
+        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'JENTE', this)">JENTE</button>
+        <button type="button" class="btn k-btn" onclick="velgEnkel('k', 'ANNET', this)">ANNET</button>
+    </div>
+
+    <label>Alder</label>
+    <div class="grid">
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'B-SKOLE', this)">B-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'U-SKOLE', this)">U-SKOLE</button>
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', 'VGS', this)">VGS</button>
+        <button type="button" class="btn a-btn" onclick="velgEnkel('a', '20-25 ÅR', this)">20-25 ÅR</button>
+    </div>
+
+    <label>Antall ungdommer</label>
+    <input type="number" id="antall" value="1">
+
+    <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE REGISTRERING</button>
+</div>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Data er registrert i Google!'); location.reload();}"></iframe>
+
+<script>
+    var valgtData = { t: "", k: "", a: "" };
+    var valgteTemaer = [];
+    var sent = false;
+
+    function velgEnkel(kat, verdi, el) {
+        document.querySelectorAll('.' + kat + '-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        valgtData[kat] = verdi;
+        if (kat === 't') {
+            document.getElementById('temaSection').style.display = (verdi === 'SAMTALE' ? 'block' : 'none');
+        }
+    }
+
+    function toggleTema(verdi, el) {
+        if (valgteTemaer.includes(verdi)) {
+            valgteTemaer = valgteTemaer.filter(t => t !== verdi);
+            el.classList.remove('active');
+        } else {
+            valgteTemaer.push(verdi);
+            el.classList.add('active');
+        }
+    }
+
+    function hurtigLagre() {
+        var sted = document.getElementById('bydel').value;
+        if(confirm("Lagre kun tilstedeværelse i " + sted + "?")) {
+            sendTilGoogle(sted, "", "", "", "", "", []);
+        }
+    }
+
+    function lagreFull() {
+        var arena = document.getElementById('lokasjon').value;
+        var feilmeldinger = [];
+
+        if (!valgtData.t) feilmeldinger.push("- Velg Type treff");
+        if (!valgtData.k) feilmeldinger.push("- Velg Kjønn");
+        if (!valgtData.a) feilmeldinger.push("- Velg Alder");
+        
+        if (valgtData.t === 'SAMTALE' && valgteTemaer.length === 0) {
+            feilmeldinger.push("- Velg minst ett Tema for samtale");
+        }
+
+        if (feilmeldinger.length > 0) {
+            alert("Vennligst fyll ut følgende før lagring:\n" + feilmeldinger.join("\n"));
+            return;
+        }
+
+        sendTilGoogle(
+            document.getElementById('bydel').value, 
+            arena, 
+            valgtData.t, 
+            document.getElementById('antall').value, 
+            valgtData.a, 
+            valgtData.k, 
+            valgteTemaer
+        );
+    }
+
+    function sendTilGoogle(bydel, arena, type, antall, alder, kjonn, temaer) {
+        sent = true;
+        document.getElementById('btnLagre').disabled = true;
+        document.getElementById('btnLagre').innerHTML = "SENDER...";
+
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '

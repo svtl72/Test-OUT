@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OUT Drammen - Driftsversjon</title>
+    <title>OUT Drammen - Fullversjon</title>
     <style>
         :root { --primary: #2563eb; --success: #059669; --purple: #8b5cf6; --bg: #f8fafc; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; }
-        .kort { width: 100%; max-width: 450px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; box-sizing: border-box; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; }
+        .kort { width: 100%; max-width: 480px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; box-sizing: border-box; }
         .header { text-align: center; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
         h1 { color: #1e3a8a; margin: 0; font-size: 22px; }
         label { font-weight: 700; display: block; margin: 15px 0 5px; font-size: 11px; color: #475569; text-transform: uppercase; }
@@ -17,11 +17,14 @@
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed #cbd5e1; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; font-size: 13px; transition: 0.2s; }
+        .btn { background: #fff; border: 2px solid #e2e8f0; padding: 10px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #475569; font-size: 12px; transition: 0.2s; }
         .btn.active { background: var(--primary) !important; color: white !important; border-color: #1e40af !important; }
+        
+        /* Tema-grid med 2 kolonner for bedre plass på mobil/PC */
         .tema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         #temaSection { display: none; margin-top: 10px; padding: 15px; background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 800; margin-top: 20px; cursor: pointer; width: 100%; }
+        
+        .save-btn { background: var(--success); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; margin-top: 25px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -69,14 +72,19 @@
         <label>Tema (Velg flere)</label>
         <div class="tema-grid">
             <button type="button" class="btn tema-btn" onclick="toggleTema('Alkohol', this)">Alkohol</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Bolig', this)">Bolig</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Cannabis', this)">Cannabis</button>
             <button type="button" class="btn tema-btn" onclick="toggleTema('Familie', this)">Familie</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Psykisk helse', this)">Psykisk helse</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Vold', this)">Vold</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Rusmidler', this)">Rusmidler</button>
             <button type="button" class="btn tema-btn" onclick="toggleTema('Forhold', this)">Forhold</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Fremtid', this)">Fremtid</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Fysisk helse', this)">Fysisk helse</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Psykisk helse', this)">Psykisk helse</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Kriminalitet', this)">Kriminalitet</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Rusmidler', this)">Rusmidler</button>
             <button type="button" class="btn tema-btn" onclick="toggleTema('Økonomi', this)">Økonomi</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Skole/Jobb', this)">Skole/Jobb</button>
-            <button type="button" class="btn tema-btn" onclick="toggleTema('Fritid', this)">Fritid</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Vold', this)">Vold</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Skole', this)">Skole</button>
+            <button type="button" class="btn tema-btn" onclick="toggleTema('Informasjonsarbeid', this)">Informasjonsarbeid</button>
         </div>
     </div>
 
@@ -101,7 +109,7 @@
     <button type="button" class="save-btn" id="btnLagre" onclick="lagreFull()">LAGRE REGISTRERING</button>
 </div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Data er registrert!'); location.reload();}"></iframe>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(sent){alert('Alt lagret!'); location.reload();}"></iframe>
 
 <script>
     var valgtData = { t: "", k: "", a: "" };
@@ -128,13 +136,13 @@
     }
 
     function hurtigLagre() {
-        if(confirm("Lagre tilstedeværelse i " + document.getElementById('bydel').value + "?")) {
+        if(confirm("Lagre rask tilstedeværelse?")) {
             sendTilGoogle(document.getElementById('bydel').value, "OPPSØKENDE UTE", "TREFF", "0", "ANNET", "ANNET", []);
         }
     }
 
     function lagreFull() {
-        if(!valgtData.t || !valgtData.k || !valgtData.a) return alert("Fyll ut Type, Kjønn og Alder!");
+        if(!valgtData.t || !valgtData.k || !valgtData.a) return alert("Husk å velge Type, Kjønn og Alder!");
         sendTilGoogle(
             document.getElementById('bydel').value, 
             document.getElementById('lokasjon').value, 
